@@ -145,6 +145,47 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
+		<!--<dependency>-->
+			<!--<groupId>javax.servlet</groupId>-->
+			<!--<artifactId>servlet-api</artifactId>-->
+			<!--<version>2.5</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 	</dependencies>
 
+    <!--<build>-->
+        <!--<finalName>xxl-job-admin</finalName>-->
+		<!--<plugins>-->
+			<!--<plugin>-->
+				<!--<groupId>org.apache.tomcat.maven</groupId>-->
+				<!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+				<!--<version>2.2</version>-->
+				<!--<configuration>-->
+					<!--<port>8181</port>-->
+					<!--&lt;!&ndash;<path>/testing</path>&ndash;&gt;-->
+
+					<!--&lt;!&ndash;<url>http://localhost:8080/manager/text</url>&ndash;&gt;-->
+					<!--&lt;!&ndash;<server>&ndash;&gt;-->
+						<!--&lt;!&ndash;<id>tomcat</id>&ndash;&gt;-->
+						<!--&lt;!&ndash;<username>tomcat</username>&ndash;&gt;-->
+						<!--&lt;!&ndash;<password>tomcat</password>&ndash;&gt;-->
+					<!--&lt;!&ndash;</server>&ndash;&gt;-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+		<!--</plugins>-->
+    <!--</build>-->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.tinywind</groupId>
+				<artifactId>tomcat-embed-maven</artifactId>
+				<version>8.5.2</version>
+				<configuration>
+					<port>9200</port>
+					<contextPath>/jobadmin</contextPath>
+					<baseDir>${project.basedir}/src/main/webapp</baseDir>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
