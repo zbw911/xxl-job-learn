@@ -84,6 +84,7 @@ public class JobFailMonitorHelper {
 			}
 		});
 		monitorThread.setDaemon(true);
+		monitorThread.setName("monitorThread");
 		monitorThread.start();
 	}
 

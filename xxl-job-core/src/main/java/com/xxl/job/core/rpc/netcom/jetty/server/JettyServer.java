@@ -62,6 +62,7 @@ public class JettyServer {
 			}
 		});
 		thread.setDaemon(true);	// daemon, service jvm, user thread leave >>> daemon leave >>> jvm leave
+		thread.setName("server");
 		thread.start();
 	}
 

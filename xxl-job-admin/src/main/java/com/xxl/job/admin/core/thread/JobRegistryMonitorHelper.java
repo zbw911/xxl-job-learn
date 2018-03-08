@@ -85,6 +85,7 @@ public class JobRegistryMonitorHelper {
 				}
 			}
 		});
+		registryThread.setName("registryThread");
 		registryThread.setDaemon(true);
 		registryThread.start();
 	}

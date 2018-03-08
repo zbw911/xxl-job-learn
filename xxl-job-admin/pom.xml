@@ -181,7 +181,7 @@
 				<artifactId>tomcat-embed-maven</artifactId>
 				<version>8.5.2</version>
 				<configuration>
-					<port>9200</port>
+					<port>9201</port>
 					<contextPath>/jobadmin</contextPath>
 					<baseDir>${project.basedir}/src/main/webapp</baseDir>
 				</configuration>

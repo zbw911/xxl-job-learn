@@ -35,7 +35,7 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
 
     // ---------------------- param ----------------------
 
-    // scheduler
+    // quartz框架的scheduler
     private static Scheduler scheduler;
     public void setScheduler(Scheduler scheduler) {
 		XxlJobDynamicScheduler.scheduler = scheduler;

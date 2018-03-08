@@ -85,6 +85,7 @@ public class TriggerCallbackThread {
             }
         });
         triggerCallbackThread.setDaemon(true);
+        triggerCallbackThread.setName("triggerCallbackThread");
         triggerCallbackThread.start();
     }
     public void toStop(){
