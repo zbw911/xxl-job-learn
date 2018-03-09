@@ -10,21 +10,29 @@
 	<description>A lightweight distributed task scheduling framework.</description>
 	<url>http://www.xuxueli.com/</url>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.6.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<modules>
 		<module>xxl-job-core</module>
 		<module>xxl-job-admin</module>
 		<module>xxl-job-executor-samples</module>
-    </modules>
+		<module>xxl-job-admin-springboot</module>
+	</modules>
 
 	<properties>
 		<javax.servlet-api.version>3.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
 
-		<spring.version>3.2.18.RELEASE</spring.version>
+		<spring.version>4.3.12.RELEASE</spring.version>
 		<jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
 		<aspectjweaver.version>1.8.7</aspectjweaver.version>
 		<slf4j-api.version>1.7.25</slf4j-api.version>
-		<freemarker.version>2.3.20</freemarker.version>
+		<freemarker.version>2.3.23</freemarker.version>
 		<junit.version>4.11</junit.version>
 
 		<jetty-server.version>9.2.22.v20170606</jetty-server.version>
@@ -152,7 +160,16 @@
                             </execution>
                         </executions>
                     </plugin>
+
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<fork>true</fork>
+						</configuration>
+					</plugin>
 				</plugins>
+
 			</build>
 			<distributionManagement>
 				<snapshotRepository>
