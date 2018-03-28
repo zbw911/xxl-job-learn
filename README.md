@@ -9,6 +9,8 @@
 
 [xxl-job执行器原理](doc/learn/xxl-job-executor.md)
 
+[xxl-job分析之quartz集群原理分析](doc/learn/quart-cluster.md)
+
 最后把[xxl-job](http://www.xuxueli.com/xxl-job/)的调度中心模块改成`spring boot`版作为结束.
 
 <p align="center">
