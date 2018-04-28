@@ -28,7 +28,7 @@ public class XxlJobExecutor implements ApplicationContextAware {
 
     // ---------------------- param ----------------------
     private String ip;
-    private int port = 9999;
+    private int port = 0;
     private String appName;
     private String adminAddresses;
     private String accessToken;

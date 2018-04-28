@@ -44,15 +44,23 @@ public class JettyServer {
 				try {
 					// Start server
 					server.start();
-					logger.info(">>>>>>>>>>>> xxl-job jetty server start success at port:{}.", port);
+
+					int newport = port;
+
+					if (port == 0) {
+						newport = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
+						logger.info(">>>>>>>>>>>> xxl-job jetty server settings port=0 ,  newport={}.", newport);
+					}
+
+					logger.info(">>>>>>>>>>>> xxl-job jetty server start success at port:{}.", newport);
 
 					// Start Registry-Server
-					ExecutorRegistryThread.getInstance().start(port, ip, appName);
+					ExecutorRegistryThread.getInstance().start(newport, ip, appName);
 
 					// Start Callback-Server
 					TriggerCallbackThread.getInstance().start();
 
-					server.join();	// block until thread stopped
+					server.join();    // block until thread stopped
 					logger.info(">>>>>>>>>>> xxl-rpc server join success, netcon={}, port={}", JettyServer.class.getName(), port);
 				} catch (Exception e) {
 					logger.error(e.getMessage(), e);
