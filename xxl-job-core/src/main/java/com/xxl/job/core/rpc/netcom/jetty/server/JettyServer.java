@@ -61,7 +61,7 @@ public class JettyServer {
 					TriggerCallbackThread.getInstance().start();
 
 					server.join();    // block until thread stopped
-					logger.info(">>>>>>>>>>> xxl-rpc server join success, netcon={}, port={}", JettyServer.class.getName(), port);
+					logger.info(">>>>>>>>>>> xxl-rpc server join success, netcon={}, port={}", JettyServer.class.getName(), newport);
 				} catch (Exception e) {
 					logger.error(e.getMessage(), e);
 				} finally {
