@@ -5,8 +5,8 @@ import com.xxl.job.core.biz.AdminBiz;
 import com.xxl.job.core.rpc.codec.RpcRequest;
 import com.xxl.job.core.rpc.codec.RpcResponse;
 import com.xxl.job.core.rpc.netcom.NetComServerFactory;
-import com.xxl.job.core.rpc.serialize.HessianSerializer;
 import com.xxl.job.core.util.HttpClientUtil;
+import com.xxl.job.core.util.JacksonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,13 +27,14 @@ public class JobApiController {
     private RpcResponse doInvoke(HttpServletRequest request) {
         try {
             // deserialize request
-            byte[] requestBytes = HttpClientUtil.readBytes(request);
-            if (requestBytes == null || requestBytes.length==0) {
+            String requestStr = HttpClientUtil.readStr(request);
+
+            if (requestStr == null || requestStr.length() == 0) {
                 RpcResponse rpcResponse = new RpcResponse();
                 rpcResponse.setError("RpcRequest byte[] is null");
                 return rpcResponse;
             }
-            RpcRequest rpcRequest = (RpcRequest) HessianSerializer.deserialize(requestBytes, RpcRequest.class);
+            RpcRequest rpcRequest = (RpcRequest) JacksonUtil.readValue(requestStr, RpcRequest.class);
 
             // invoke
             RpcResponse rpcResponse = NetComServerFactory.invokeService(rpcRequest, null);
@@ -48,21 +49,21 @@ public class JobApiController {
     }
 
     @RequestMapping(AdminBiz.MAPPING)
-    @PermessionLimit(limit=false)
+    @PermessionLimit(limit = false)
     public void api(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // invoke
         RpcResponse rpcResponse = doInvoke(request);
 
         // serialize response
-        byte[] responseBytes = HessianSerializer.serialize(rpcResponse);
+        String responseStr = JacksonUtil.writeValueAsString(rpcResponse);
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         //baseRequest.setHandled(true);
 
         OutputStream out = response.getOutputStream();
-        out.write(responseBytes);
+        out.write(responseStr.getBytes());
         out.flush();
     }
 

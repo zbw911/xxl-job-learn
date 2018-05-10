@@ -30,7 +30,7 @@ public class DemoJobHandler extends IJobHandler {
 
 		for (int i = 0; i < 5; i++) {
 			XxlJobLogger.log("beat at:" + i);
-			TimeUnit.SECONDS.sleep(2);
+			//TimeUnit.SECONDS.sleep(2);
 		}
 		return ReturnT.SUCCESS;
 	}

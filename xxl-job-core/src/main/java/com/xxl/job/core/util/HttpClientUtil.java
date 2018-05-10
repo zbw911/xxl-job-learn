@@ -6,6 +6,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -18,23 +19,24 @@ import java.io.InputStream;
 
 /**
  * httpclient util
+ *
  * @author xuxueli 2015-10-31 19:50:41
  */
 public class HttpClientUtil {
-	private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
-	/**
-	 * post request
-	 */
-	public static byte[] postRequest(String reqURL, byte[] date) throws Exception {
-		byte[] responseBytes = null;
-		
-		HttpPost httpPost = new HttpPost(reqURL);
-		//CloseableHttpClient httpClient = HttpClients.createDefault();
-		CloseableHttpClient httpClient = HttpClients.custom().disableAutomaticRetries().build();	// disable retry
+    /**
+     * post request
+     */
+    public static byte[] postRequest(String reqURL, byte[] date) throws Exception {
+        byte[] responseBytes = null;
 
-		try {
-			// init post
+        HttpPost httpPost = new HttpPost(reqURL);
+        //CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().disableAutomaticRetries().build();    // disable retry
+
+        try {
+            // init post
 			/*if (params != null && !params.isEmpty()) {
 				List<NameValuePair> formParams = new ArrayList<NameValuePair>();
 				for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -43,69 +45,150 @@ public class HttpClientUtil {
 				httpPost.setEntity(new UrlEncodedFormEntity(formParams, "UTF-8"));
 			}*/
 
-			// timeout
-			RequestConfig requestConfig = RequestConfig.custom()
+            // timeout
+            RequestConfig requestConfig = RequestConfig.custom()
                     .setConnectionRequestTimeout(10000)
                     .setSocketTimeout(10000)
                     .setConnectTimeout(10000)
                     .build();
 
-			httpPost.setConfig(requestConfig);
+            httpPost.setConfig(requestConfig);
 
-			// data
-			if (date != null) {
-				httpPost.setEntity(new ByteArrayEntity(date, ContentType.DEFAULT_BINARY));
-			}
-			// do post
-			HttpResponse response = httpClient.execute(httpPost);
-			HttpEntity entity = response.getEntity();
-			if (null != entity) {
-				responseBytes = EntityUtils.toByteArray(entity);
-				EntityUtils.consume(entity);
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-			throw e;
-		} finally {
-			httpPost.releaseConnection();
-			try {
-				httpClient.close();
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-			}
-		}
-		return responseBytes;
-	}
-	
-	/**
-	 * read bytes from http request
-	 * @param request
-	 * @return
-	 * @throws IOException 
-	 */
-	public static final byte[] readBytes(HttpServletRequest request) throws IOException {
-		request.setCharacterEncoding("UTF-8");
-        int contentLen = request.getContentLength();
-		InputStream is = request.getInputStream();
-		if (contentLen > 0) {
-			int readLen = 0;
-			int readLengthThisTime = 0;
-			byte[] message = new byte[contentLen];
-			try {
-				while (readLen != contentLen) {
-					readLengthThisTime = is.read(message, readLen, contentLen - readLen);
-					if (readLengthThisTime == -1) {
-						break;
-					}
-					readLen += readLengthThisTime;
+            // data
+            if (date != null) {
+                httpPost.setEntity(new ByteArrayEntity(date, ContentType.DEFAULT_BINARY));
+            }
+            // do post
+            HttpResponse response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if (null != entity) {
+                responseBytes = EntityUtils.toByteArray(entity);
+                EntityUtils.consume(entity);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            throw e;
+        } finally {
+            httpPost.releaseConnection();
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return responseBytes;
+    }
+
+    /**
+     * post request
+     */
+    public static String postRequest(String reqURL, String data) throws Exception {
+        String responseStr = null;
+
+        HttpPost httpPost = new HttpPost(reqURL);
+        //CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().disableAutomaticRetries().build();    // disable retry
+
+        try {
+            // init post
+			/*if (params != null && !params.isEmpty()) {
+				List<NameValuePair> formParams = new ArrayList<NameValuePair>();
+				for (Map.Entry<String, String> entry : params.entrySet()) {
+					formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
 				}
-				return message;
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-				throw e;
-			}
-		}
-		return new byte[] {};
-	}
+				httpPost.setEntity(new UrlEncodedFormEntity(formParams, "UTF-8"));
+			}*/
+
+            // timeout
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectionRequestTimeout(10000)
+                    .setSocketTimeout(10000)
+                    .setConnectTimeout(10000)
+                    .build();
+
+            httpPost.setConfig(requestConfig);
+
+            // data
+            if (data != null) {
+                httpPost.setEntity(new StringEntity(data, ContentType.TEXT_PLAIN));
+            }
+            // do post
+            HttpResponse response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if (null != entity) {
+                responseStr = EntityUtils.toString(entity);
+                EntityUtils.consume(entity);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            throw e;
+        } finally {
+            httpPost.releaseConnection();
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return responseStr;
+    }
+
+    /**
+     * read bytes from http request
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    public static final byte[] readBytes1(HttpServletRequest request) throws IOException {
+        request.setCharacterEncoding("UTF-8");
+        int contentLen = request.getContentLength();
+        InputStream is = request.getInputStream();
+        if (contentLen > 0) {
+            int readLen = 0;
+            int readLengthThisTime = 0;
+            byte[] message = new byte[contentLen];
+            try {
+                while (readLen != contentLen) {
+                    readLengthThisTime = is.read(message, readLen, contentLen - readLen);
+                    if (readLengthThisTime == -1) {
+                        break;
+                    }
+                    readLen += readLengthThisTime;
+                }
+                return message;
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        }
+        return new byte[]{};
+    }
+
+
+    public static final String readStr(HttpServletRequest request) throws IOException {
+        request.setCharacterEncoding("UTF-8");
+        int contentLen = request.getContentLength();
+        InputStream is = request.getInputStream();
+        if (contentLen > 0) {
+            int readLen = 0;
+            int readLengthThisTime = 0;
+            byte[] message = new byte[contentLen];
+            try {
+                while (readLen != contentLen) {
+                    readLengthThisTime = is.read(message, readLen, contentLen - readLen);
+                    if (readLengthThisTime == -1) {
+                        break;
+                    }
+                    readLen += readLengthThisTime;
+                }
+                return new String(message);
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        }
+        return null;
+    }
 
 }
